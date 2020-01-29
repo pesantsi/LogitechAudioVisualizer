@@ -787,7 +787,7 @@ label_5:
                 if (colorMode == 1)
                     return (int)this.Invoke(new Func<int>(() =>
                     {
-                        this.comboBox_VColorWaveDirection.SelectedIndex;
+                        return this.comboBox_VColorWaveDirection.SelectedIndex;
                     }));
         if (colorMode == 2)
           return (int) this.comboBox_HColorWaveDirection.SelectedIndex;

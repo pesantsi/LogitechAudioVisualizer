@@ -1,0 +1,48 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>LogitechAudioVisualizer</RootNamespace>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="Gma.System.MouseKeyHook">
+      <HintPath>lib\Gma.System.MouseKeyHook.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="CSCore">
+      <HintPath>lib\CSCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="LogitechAudioVisualizer\MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LogitechAudioVisualizer\OutputWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LogitechAudioVisualizer\ProfileRenameForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LogitechAudioVisualizer\UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="LogitechAudioVisualizer\UpgradeSettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <PropertyGroup>
+    <PostBuildEvent>XCOPY "$(SolutionDir)\Lib\LogitechLedEnginesWrapper.dll" "$(TargetDir)"  /s /d</PostBuildEvent>
+  </PropertyGroup>
+</Project>
