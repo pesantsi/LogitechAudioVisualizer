@@ -1,0 +1,60 @@
+
+.vs/Logitech Spectrogram/v14/.suo
+
+.vs/Logitech Spectrogram/v16/.suo
+
+.vs/Logitech Spectrogram/v16/Server/sqlite3/storage.ide
+
+.vs/Logitech Spectrogram/v16/Server/sqlite3/storage.ide-shm
+
+.vs/Logitech Spectrogram/v16/Server/sqlite3/storage.ide-wal
+
+bin/Debug/CSCore.dll
+
+bin/Debug/Gma.System.MouseKeyHook.dll
+
+bin/Debug/Logitech Spectrogram.exe
+
+bin/Debug/Logitech Spectrogram.exe.config
+
+bin/Debug/Logitech Spectrogram.pdb
+
+bin/Debug/LogitechGArxControlEnginesWrapper.dll
+
+bin/Debug/LogitechLedEnginesWrapper.dll
+
+*.user
+
+*.pdb
+
+obj/Debug/DesignTimeResolveAssemblyReferences.cache
+
+obj/Debug/DesignTimeResolveAssemblyReferencesInput.cache
+
+obj/Debug/Logitech Spectrogram.csproj.CopyComplete
+
+obj/Debug/Logitech Spectrogram.csproj.FileListAbsolute.txt
+
+obj/Debug/Logitech Spectrogram.csproj.GenerateResource.cache
+
+obj/Debug/Logitech Spectrogram.csprojAssemblyReference.cache
+
+obj/Debug/Logitech Spectrogram.exe
+
+obj/Debug/LogitechSpectrogram.MainForm.resources
+
+obj/Debug/LogitechSpectrogram.OutputWindow.resources
+
+obj/Debug/LogitechSpectrogram.ProfileRenameForm.resources
+
+obj/Debug/LogitechSpectrogram.Properties.Resources.resources
+
+obj/Debug/LogitechSpectrogram.UpdateForm.resources
+
+obj/Debug/LogitechSpectrogram.UpgradeSettingsForm.resources
+
+obj/Debug/TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs
+
+obj/Debug/TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs
+
+obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
