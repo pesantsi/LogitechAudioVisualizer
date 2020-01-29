@@ -1,14 +1,11 @@
-﻿using System.Reflection;
-using System.Runtime.InteropServices;
+﻿using System.Windows;
 
-[assembly: AssemblyTitle("Logitech Audio Visualizer")]
-[assembly: AssemblyDescription("An audio visualizer for Logitech devices")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Audio Visualizer")]
-[assembly: AssemblyCopyright("")]
-[assembly: AssemblyTrademark("")]
-[assembly: ComVisible(false)]
-[assembly: Guid("26BE2051-FA21-4E9E-AC05-84402BF43C00")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
-[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: ThemeInfo(
+    ResourceDictionaryLocation.None, //where theme specific resource dictionaries are located
+                                     //(used if a resource is not found in the page,
+                                     // or application resource dictionaries)
+    ResourceDictionaryLocation.SourceAssembly //where the generic resource dictionary is located
+                                              //(used if a resource is not found in the page,
+                                              // app, or any theme specific resource dictionaries)
+)]
+

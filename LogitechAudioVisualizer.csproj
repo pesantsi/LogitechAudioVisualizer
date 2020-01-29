@@ -9,6 +9,19 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="LogitechAudioVisualizer %28.Net Core%29\obj\**" />
+    <EmbeddedResource Remove="LogitechAudioVisualizer %28.Net Core%29\obj\**" />
+    <None Remove="LogitechAudioVisualizer %28.Net Core%29\obj\**" />
+    <None Include="LICENSE.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <Page Remove="LogitechAudioVisualizer %28.Net Core%29\obj\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Gma.System.MouseKeyHook">
       <HintPath>lib\Gma.System.MouseKeyHook.dll</HintPath>
@@ -19,21 +32,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Update="LogitechAudioVisualizer\MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LogitechAudioVisualizer\OutputWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LogitechAudioVisualizer\ProfileRenameForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LogitechAudioVisualizer\UpdateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Update="LogitechAudioVisualizer\UpgradeSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Update="Views\MainForm.cs" />
+    <Compile Update="Views\OutputWindow.cs" />
+    <Compile Update="Views\ProfileRenameForm.cs" />
+    <Compile Update="Views\UpdateForm.cs" />
+    <Compile Update="Views\UpgradeSettingsForm.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -42,7 +45,20 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
   <PropertyGroup>
     <PostBuildEvent>XCOPY "$(SolutionDir)\Lib\LogitechLedEnginesWrapper.dll" "$(TargetDir)"  /s /d</PostBuildEvent>
+    <Company />
+    <Authors>pesantsi</Authors>
+    <Product>Logitech Audio Visualizer</Product>
+    <Description>An audio visualizer for Logitech devices
+
+based on the work of : http://dynftw.tk/spectrogram/
+
+rework to port it to .Net Core and GitHub</Description>
+    <Copyright>http://dynftw.tk/spectrogram/</Copyright>
+    <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
   </PropertyGroup>
 </Project>
