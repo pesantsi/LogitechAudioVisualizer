@@ -364,3 +364,11 @@ obj/Debug/netcoreapp3.1/Avalonia/original.dll
 obj/Debug/netcoreapp3.1/Avalonia/references
 
 obj/Debug/netcoreapp3.1/Avalonia/resources
+
+bin/Debug/netcoreapp3.1/Avalonia.ReactiveUI.dll
+
+bin/Debug/netcoreapp3.1/DynamicData.dll
+
+bin/Debug/netcoreapp3.1/ReactiveUI.dll
+
+bin/Debug/netcoreapp3.1/Splat.dll

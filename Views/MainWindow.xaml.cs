@@ -2,7 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
-namespace LogitechAudioVisualizer
+namespace LogitechAudioVisualizer.Views
 {
     public class MainWindow : Window
     {

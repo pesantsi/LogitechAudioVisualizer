@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.9.2" />
     <PackageReference Include="Avalonia.Desktop" Version="0.9.2" />
+    <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.2" />
     <PackageReference Include="System.Resources.Extensions" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
@@ -18,14 +19,6 @@
     <Reference Include="CSCore">
       <HintPath>lib\CSCore.dll</HintPath>
     </Reference>
-  </ItemGroup>
-<ItemGroup>
-    <Compile Update="**\*.xaml.cs">
-      <DependentUpon>%(Filename)</DependentUpon>
-    </Compile>
-    <AvaloniaResource Include="**\*.xaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Views\MainForm.cs" />
@@ -42,6 +35,15 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+    <ItemGroup>
+        <Compile Update="**\*.xaml.cs">
+            <DependentUpon>%(Filename)</DependentUpon>
+        </Compile>
+        <AvaloniaResource Include="**\*.xaml">
+            <SubType>Designer</SubType>
+        </AvaloniaResource>
+        <AvaloniaResource Include="Assets\**" />
+    </ItemGroup>
   <PropertyGroup>
     <Company />
     <Authors>pesantsi</Authors>
