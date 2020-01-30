@@ -1,17 +1,14 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 
 namespace LogitechAudioVisualizer
 {
-    public class Window1 : Window
+    public class MainWindow : Window
     {
-        public Window1()
+        public MainWindow()
         {
-            this.InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
+            InitializeComponent();
         }
 
         private void InitializeComponent()
