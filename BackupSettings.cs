@@ -12,11 +12,11 @@ public class BackupSettings
 {
   public static bool backupSettings()
   {
-    string filePath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
-    if (!File.Exists(filePath))
-      return false;
-    string destFileName = Path.GetDirectoryName(filePath) + "\\[backup " + DateTime.Now.ToString("yyyy-MM-dd HHmmss") + "] user.config";
-    File.Move(filePath, destFileName);
+    //string filePath = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath;
+    //if (!File.Exists(filePath))
+    //  return false;
+    //string destFileName = Path.GetDirectoryName(filePath) + "\\[backup " + DateTime.Now.ToString("yyyy-MM-dd HHmmss") + "] user.config";
+    //File.Move(filePath, destFileName);
     return true;
   }
 }
