@@ -22,11 +22,9 @@
     <None Remove=".gitignore" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="Gma.System.MouseKeyHook">
       <HintPath>lib\Gma.System.MouseKeyHook.dll</HintPath>
     </Reference>
-    <Reference Include="System.Configuration" />
     <Reference Include="CSCore">
       <HintPath>lib\CSCore.dll</HintPath>
     </Reference>
@@ -39,17 +37,17 @@
     <Compile Update="Views\UpgradeSettingsForm.cs" />
   </ItemGroup>
   <ItemGroup>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
     <Page Include="App.xaml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="LogitechGArxControlEnginesWrapper.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="LogitechLedEnginesWrapper.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <PropertyGroup>
-    <PostBuildEvent>XCOPY "$(SolutionDir)\Lib\LogitechLedEnginesWrapper.dll" "$(TargetDir)"  /s /d</PostBuildEvent>
     <Company />
     <Authors>pesantsi</Authors>
     <Product>Logitech Audio Visualizer</Product>

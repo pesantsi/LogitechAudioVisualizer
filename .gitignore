@@ -224,3 +224,7 @@ obj/Debug/netcoreapp3.1/Views/MainWindow.baml
 obj/Debug/netcoreapp3.1/Views/MainWindow.g.cs
 
 obj/Debug/netcoreapp3.1/Views/MainWindow.g.i.cs
+
+bin/Debug/netcoreapp3.1/LogitechGArxControlEnginesWrapper.dll
+
+bin/Debug/netcoreapp3.1/LogitechLedEnginesWrapper.dll
