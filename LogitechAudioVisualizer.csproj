@@ -18,6 +18,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />
+    <None Remove="UserControl1.xaml" />
+    <None Remove="Window1.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UserControl1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Window1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Avalonia.Desktop" Version="0.9.2" />
@@ -59,6 +69,6 @@ rework to port it to .Net Core and GitHub</Description>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <ApplicationIcon />
     <OutputType>Exe</OutputType>
-    <StartupObject />
+    <StartupObject>LogitechSpectrogram.Program</StartupObject>
   </PropertyGroup>
 </Project>
