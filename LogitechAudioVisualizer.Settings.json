@@ -1,0 +1,370 @@
+{
+    "userSettings": {
+        "setting": [
+            {
+                "name": "autoConsole",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "cycleDelay",
+                "serializeAs": "String",
+                "value": "20"
+            },
+            {
+                "name": "spectroScale",
+                "serializeAs": "String",
+                "value": "5"
+            },
+            {
+                "name": "refreshDelay",
+                "serializeAs": "String",
+                "value": "20"
+            },
+            {
+                "name": "FGRed",
+                "serializeAs": "String",
+                "value": "255"
+            },
+            {
+                "name": "FGGreen",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "FGBlue",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "BGRed",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "BGGreen",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "BGBlue",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "colorMode",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "gradientColor",
+                "serializeAs": "Xml",
+                "value": {
+                    "ArrayOfInt": {
+                        "-xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "-xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                        "int": [
+                            "16711680",
+                            "16718080",
+                            "16724736",
+                            "16731136",
+                            "16737792",
+                            "16744448"
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "verticalProfiles",
+                "serializeAs": "Xml",
+                "value": {
+                    "ArrayOfString": {
+                        "-xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "-xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                        "string": [
+                            "16711680",
+                            "16711680",
+                            "16749312",
+                            "16749312",
+                            "65280",
+                            "65280",
+                            "Peak Meter",
+                            "255",
+                            "13311",
+                            "26367",
+                            "39423",
+                            "52479",
+                            "65535",
+                            "Ocean",
+                            "65344",
+                            "1703782",
+                            "3407756",
+                            "5046194",
+                            "6750168",
+                            "8454143",
+                            "Aquamarine",
+                            "16711680",
+                            "16718080",
+                            "16724736",
+                            "16731136",
+                            "16737792",
+                            "16744448",
+                            "Flame",
+                            "16711807",
+                            "16056473",
+                            "15466675",
+                            "14811340",
+                            "14221542",
+                            "13631743",
+                            "Pink to Purple",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 1",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 2",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 3",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 4",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 5",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 6",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 7",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 8",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 9",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "0",
+                            "Custom Profile 10"
+                        ]
+                    }
+                }
+            },
+            {
+                "name": "OS_highQuality",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "OS_keyboardColors",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "OS_verticalScale",
+                "serializeAs": "String",
+                "value": "2"
+            },
+            {
+                "name": "OS_FG",
+                "serializeAs": "String",
+                "value": "Red"
+            },
+            {
+                "name": "OS_BG",
+                "serializeAs": "String",
+                "value": "Black"
+            },
+            {
+                "name": "frequencyBoost",
+                "serializeAs": "String",
+                "value": "30"
+            },
+            {
+                "name": "amplitudeScale",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "amplitudeOffset",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "defaultDevice",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "disableGLights",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "deviceLighting",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "autoStartup",
+                "serializeAs": "String",
+                "value": "False"
+            },
+            {
+                "name": "minimiseStartup",
+                "serializeAs": "String",
+                "value": "False"
+            },
+            {
+                "name": "ARXApp",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "cycleColors",
+                "serializeAs": "String",
+                "value": "False"
+            },
+            {
+                "name": "upgradeRequired",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "keyboardLayout",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "lastUpdateCheck",
+                "serializeAs": "String"
+            },
+            {
+                "name": "updateCheck",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "mediaKeys",
+                "serializeAs": "String",
+                "value": "True"
+            },
+            {
+                "name": "vColorWaveEnable",
+                "serializeAs": "String",
+                "value": "False"
+            },
+            {
+                "name": "vColorWaveDelay",
+                "serializeAs": "String",
+                "value": "15"
+            },
+            {
+                "name": "vColorWaveSpacing",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "vColorWaveDirection",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "hColorWaveEnable",
+                "serializeAs": "String",
+                "value": "False"
+            },
+            {
+                "name": "hColorWaveDelay",
+                "serializeAs": "String",
+                "value": "15"
+            },
+            {
+                "name": "hColorWaveSpacing",
+                "serializeAs": "String",
+                "value": "0"
+            },
+            {
+                "name": "hColorWaveDirection",
+                "serializeAs": "String",
+                "value": "1"
+            },
+            {
+                "name": "hGradientColor",
+                "serializeAs": "Xml",
+                "value": {
+                    "ArrayOfInt": {
+                        "-xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+                        "-xmlns:xsd": "http://www.w3.org/2001/XMLSchema",
+                        "int": [
+                            "16719360",
+                            "16711725",
+                            "16711800",
+                            "16711875",
+                            "15728895",
+                            "10813695",
+                            "5898495",
+                            "983295",
+                            "15615",
+                            "34815",
+                            "54015",
+                            "65505",
+                            "65430",
+                            "65355",
+                            "65280",
+                            "4980480",
+                            "9895680",
+                            "14810880",
+                            "16765440",
+                            "16746240",
+                            "16727040",
+                            "16711695",
+                            "16711770"
+                        ]
+                    }
+                }
+            }
+        ]
+    }
+}

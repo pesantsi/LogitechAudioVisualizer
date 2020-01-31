@@ -7,5 +7,7 @@ namespace LogitechAudioVisualizer.ViewModels
 {
     public class ViewModelBase : ReactiveObject
     {
+
+
     }
 }

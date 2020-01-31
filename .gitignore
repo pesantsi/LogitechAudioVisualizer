@@ -372,3 +372,7 @@ bin/Debug/netcoreapp3.1/DynamicData.dll
 bin/Debug/netcoreapp3.1/ReactiveUI.dll
 
 bin/Debug/netcoreapp3.1/Splat.dll
+
+bin/Debug/netcoreapp3.1/LogitechAudioVisualizer.Settings.json
+
+bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
