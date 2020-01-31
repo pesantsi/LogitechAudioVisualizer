@@ -2,14 +2,15 @@ name: CI
 on: push
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, ubuntu-latest]        
+    runs-on: [windows-latest]
+    #runs-on: ${{ matrix.os }}
+    #strategy:
+    #  matrix:
+    #    os: [windows-latest]        
     steps:
         - uses: actions/checkout@v2
         - name: Setup .NET Core SDK
           uses: actions/setup-dotnet@v1.4.0
     
         - name: Build with dotnet
-          run: dotnet build --configuration Release
+          run: dotnet build LogitechAudioVisualizer.Sln
