@@ -7,4 +7,4 @@ rework to port it to .Net Core and GitHub
 Built to run on Windows and Linux
 
 
-https://img.shields.io/github/workflow/status/pesantsi/LogitechAudioVisualizer/.NET Core?style=for-the-badge
+https://img.shields.io/github/workflow/status/pesantsi/LogitechAudioVisualizer/.NET%20Core?style=for-the-badge
