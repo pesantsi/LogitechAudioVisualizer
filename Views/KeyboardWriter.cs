@@ -17,11 +17,11 @@ namespace LogitechSpectrogram
         private int[,] ledMatrix = new int[7, 92];
         private int[] keyLightArray = new int[351];
         private int loopNumber;
-        private readonly MainFormInterface form;
+        //private readonly MainFormInterface form;
 
         public KeyboardWriter(MainFormInterface form)
         {
-            this.form = form;
+            //this.form = form;
         }
 
         public void Write(byte[] fftData, int[,] settings)
@@ -137,7 +137,7 @@ namespace LogitechSpectrogram
                 }
                 if ((int)enumerator1.Current != 350 || (double)(float)enumerator2.Current != 0.0)
                 {
-                    this.form.setStatusBar = "An error has occurred with the keyboard lookup table";
+                   // this.form.setStatusBar = "An error has occurred with the keyboard lookup table";
                     return 1;
                 }
                 enumerator1.MoveNext();

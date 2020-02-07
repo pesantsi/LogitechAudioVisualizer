@@ -48,6 +48,17 @@
         </AvaloniaResource>
         <AvaloniaResource Include="Assets\**" />
     </ItemGroup>
+    <ItemGroup>
+      <AvaloniaResource Remove="Views\OutputUserControl.xaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="Views\OutputUserControl.xaml" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\OutputUserControl.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
   <PropertyGroup>
     <Company />
     <Authors>pesantsi</Authors>
@@ -63,5 +74,6 @@ rework to port it to .Net Core and GitHub</Description>
     <OutputType>WinExe</OutputType>
     <StartupObject></StartupObject>
     <AssemblyName />
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 </Project>

@@ -4,19 +4,19 @@ namespace LogitechAudioVisualizer.Settings
 {
     public class UserSettingsManager
     {
-        private static readonly UserSettingsManager m_instance;
+        private static UserSettingsManager m_instance;
         private WatcherService m_watcherService;
-        private RootObject m_rootObject;
 
-        public static UserSettingsManager Instance { get { return m_instance ?? new UserSettingsManager(); } }
-        public UserSettings UserSettings { get => m_rootObject.UserSettings; }
+        public static UserSettingsManager Instance => m_instance ?? (m_instance = new UserSettingsManager());
+
+        public UserSettings UserSettings { get; private set; }
 
         public void Init()
         {
             m_watcherService = new WatcherService();
             m_watcherService.FileChanged += OnWatcherServiceFileChanged;
 
-            m_rootObject = RootObject.FromJson(File.ReadAllText("LogitechAudioVisualizer.Settings.json"));
+            UserSettings = UserSettings.FromJson(File.ReadAllText("LogitechAudioVisualizer.Settings.json"));
         }
 
         private void OnWatcherServiceFileChanged(object sender, System.IO.FileSystemEventArgs e)

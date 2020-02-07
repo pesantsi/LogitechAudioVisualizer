@@ -1,16 +1,34 @@
-﻿using LedCSharp;
+﻿using CSCore;
+using CSCore.CoreAudioAPI;
+using CSCore.DSP;
+using CSCore.SoundIn;
+using CSCore.Streams;
+using LedCSharp;
+using LogitechSpectrogram;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using LogitechAudioVisualizer.Settings;
+using Avalonia.Media;
 
 namespace LogitechAudioVisualizer.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private LogiLedSdkVersion SdkVersion { get; set; }
-
         public string Greeting => "Hello World!";
-        public string SdkVersionString => SdkVersion.ToString();
+
+        public string SdkVersionString
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
+        public OutputViewModel OutputViewModel
+        {
+            get => Get<OutputViewModel>();
+            set => Set(value);
+        }
 
         public MainWindowViewModel()
         {
@@ -77,28 +95,16 @@ namespace LogitechAudioVisualizer.ViewModels
 
             try
             {
-                if (LogitechGSDK.LogiLedInit())
-                {
-                    SdkVersion = new LogiLedSdkVersion();
-                    LogitechGSDK.LogiLedGetSdkVersion(ref SdkVersion.MajorNum, ref SdkVersion.MinorNum, ref SdkVersion.BuildNum);
+                var sdkVersion = new LogiLedSdkVersion();
+                LogitechGSDK.LogiLedGetSdkVersion(ref sdkVersion.MajorNum, ref sdkVersion.MinorNum, ref sdkVersion.BuildNum);
+                SdkVersionString = sdkVersion.ToString();
 
-                    //    this.toolStripStatusLabel1.Text = "Ready";
-                    //    int[] numArray = new int[3];
-                    //   
-                    //    MainForm.Global.SDKversion = numArray[0].ToString() + "." + numArray[1].ToString() + "." + numArray[2].ToString();
-                    //    this.label_A_SDKVersion.Text = "LED SDK Version:          " + MainForm.Global.SDKversion;
-                    //    LogitechGSDK.LogiLedSetTargetDevice(MainForm.Global.LogitechAllDevices);
-                    //    LogitechGSDK.LogiLedSaveCurrentLighting();
-                }
-                else
-                {
-                    //this.toolStripStatusLabel1.Text = "Failed to connect to Logitech Gaming Software";
-                    //this.button_StartSpectro.Enabled = false;
-                }
+                Task.Run(DoWork);
+
             }
             catch (DllNotFoundException ex)
             {
-               // int num = (int)MessageBox.Show("The file \"LogitechLedEnginesWrapper.dll\" could not be found.\nRefer to the FAQ for possible solutions. This program will now exit.\n\n" + ex.Message, "DLL Missing: LogitechLedEnginesWrapper", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                // int num = (int)MessageBox.Show("The file \"LogitechLedEnginesWrapper.dll\" could not be found.\nRefer to the FAQ for possible solutions. This program will now exit.\n\n" + ex.Message, "DLL Missing: LogitechLedEnginesWrapper", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 //Environment.Exit(0);
             }
 
@@ -125,6 +131,268 @@ namespace LogitechAudioVisualizer.ViewModels
                 return $"{MajorNum}.{MinorNum}.{BuildNum}";
             }
         }
+
+        private void DoWork()
+        {
+            var t = UserSettingsManager.Instance.UserSettings;
+
+            //MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
+
+            MMDevice mmDevice = GetInputDevices()["Remote Audio"];
+
+
+            string keyboardLayout = "US";
+            //while (true)
+            //{
+            //    try
+            //    {
+            //        //mmDevice = ((KeyValuePair<string, MMDevice>)this.comboBox_InputDevice.SelectedItem).Value;
+            //        //keyboardLayout = (string)this.comboBox_KeyboardLayout.SelectedValue;
+
+            //        // mmDevice = (MMDevice) this.Invoke((Action) (() => ((KeyValuePair<string, MMDevice>) this.comboBox_InputDevice.SelectedItem).Value));
+            //        // keyboardLayout = (string) this.Invoke((Action) (() => (string) this.comboBox_KeyboardLayout.SelectedValue));
+            //        break;
+            //    }
+            //    catch (InvalidOperationException ex)
+            //    {
+            //        Thread.Sleep(1000);
+            //    }
+            //}
+            int[,] settings = new int[25, 4];
+            int refreshDelay = 20;
+            int amplitudeScaleType = 0;
+            int amplitudeOffset = 0;
+            int frequencyBoostFactor = 10;
+            float spectroScale = 1.0f;
+            int length = 256;
+            byte[] audioBuffer = new byte[length];
+            byte[] fftData = new byte[length / 2];
+            float[] fftResultBuffer = new float[length];
+            //DateTime now = DateTime.Now;
+            List<IWriter> writerList = new List<IWriter>();
+            KeyboardWriter keyboardWriter;
+            writerList.Add((IWriter)(keyboardWriter = new KeyboardWriter(null)));
+            keyboardWriter.InitKeyboard(keyboardLayout);
+            writerList.Add((IWriter)new DeviceWriter());
+            WasapiCapture wasapiCapture1 = new WasapiCapture();
+            FftProvider fftProvider = new FftProvider(2, FftSize.Fft256);
+            WasapiCapture wasapiCapture2 = !(mmDevice.DeviceID[5].ToString() == "1") ? (WasapiCapture)new WasapiLoopbackCapture() : new WasapiCapture();
+            wasapiCapture2.Device = mmDevice;
+            wasapiCapture2.Initialize();
+            SoundInSource waveSource = new SoundInSource((ISoundIn)wasapiCapture2);
+            SingleBlockNotificationStream sampleSource = new SingleBlockNotificationStream(waveSource.ToSampleSource().ToMono().ChangeSampleRate(8192));
+            sampleSource.SingleBlockRead += (EventHandler<SingleBlockReadEventArgs>)((s, a) => fftProvider.Add(a.Left, a.Right));
+            IWaveSource finalSource = sampleSource.ToWaveSource(8).ChangeSampleRate(8192);
+            waveSource.DataAvailable += (EventHandler<DataAvailableEventArgs>)((s, f) => finalSource.Read(audioBuffer, 0, audioBuffer.Length));
+            wasapiCapture2.Start();
+
+            //Random random = new Random();
+            //for(int i=0; i<Global.gradientColor.Length; i++)
+            //{
+            //    Global.gradientColor[i] = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
+            //}
+
+            Color backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.BgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.BgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.BgBlue.Value);
+            Color foregroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.FgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.FgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.FgBlue.Value);
+
+            OutputViewModel = new OutputViewModel();
+
+            label_5:
+            //for (int i = 0; i < 2; ++i)
+            {
+                // if (!this.backgroundWorker_Main.CancellationPending)
+                {
+                    // this.Invoke((Action)(() =>
+                    //{
+
+                    settings[0, 0] = UserSettingsManager.Instance.UserSettings.ColorMode.Value;
+                    settings[0, 1] = Convert.ToInt32(true); //*this.checkBox_UseKeyboardColors.Checked;
+                    settings[0, 2] = Convert.ToInt32(true); // this.checkBox_DeviceLighting.Checked);
+                    settings[0, 3] = Convert.ToInt32(true); // this.checkBox_DisableGLights.Checked);
+                    switch (UserSettingsManager.Instance.UserSettings.ColorMode.Value)
+                    {
+                        case 0:
+                            settings[1, 0] = backgroundColor.R;
+                            settings[1, 1] = backgroundColor.G;
+                            settings[1, 2] = backgroundColor.B;
+                            settings[2, 0] = foregroundColor.R;
+                            settings[2, 1] = foregroundColor.G;
+                            settings[2, 2] = foregroundColor.B;
+                            break;
+                        case 1:
+                            for (int index = 0; index < UserSettingsManager.Instance.UserSettings.GradientColor.Value.Count; ++index)
+                            {
+                                Color gradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.GradientColor.Value[index]);
+
+                                settings[index + 2, 0] = gradientColor.R;
+                                settings[index + 2, 1] = gradientColor.G;
+                                settings[index + 2, 2] = gradientColor.B;
+                            }
+                            settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.VColorWaveEnable.Value);
+                            break;
+                        case 2:
+
+                            Color hGradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.HGradientColor.Value[1]);
+
+                            settings[2, 0] = hGradientColor.R;
+                            settings[2, 1] = hGradientColor.G;
+                            settings[2, 2] = hGradientColor.B;
+                            for (int index = 1; index < UserSettingsManager.Instance.UserSettings.HGradientColor.Value.Count; ++index)
+                            {
+                                hGradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.HGradientColor.Value[index]);
+
+                                settings[index + 2, 0] = hGradientColor.R;
+                                settings[index + 2, 1] = hGradientColor.G;
+                                settings[index + 2, 2] = hGradientColor.B;
+                            }
+                            settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.HColorWaveEnable.Value);
+                            break;
+                    }
+
+                    refreshDelay = UserSettingsManager.Instance.UserSettings.RefreshDelay.Value;
+                    amplitudeScaleType = UserSettingsManager.Instance.UserSettings.AmplitudeScale.Value;
+                    amplitudeOffset = UserSettingsManager.Instance.UserSettings.AmplitudeOffset.Value;
+                    frequencyBoostFactor = UserSettingsManager.Instance.UserSettings.FrequencyBoost.Value;
+                    spectroScale = UserSettingsManager.Instance.UserSettings.SpectroScale.Value;
+
+                    // }));
+
+                    fftProvider.GetFftData(fftResultBuffer);
+                    for (int j = 0; j < fftResultBuffer.Length / 2; ++j)
+                    {
+                        float num = (float)((1.0 + (j * frequencyBoostFactor) / 1280.0) * 1000.0);
+                        switch (amplitudeScaleType)
+                        {
+                            case 0:
+                                fftData[j] = this.ToByte((double)fftResultBuffer[j] * num * spectroScale + (double)amplitudeOffset);
+                                break;
+                            case 1:
+                                fftData[j] = this.ToByte(Math.Sqrt((double)fftResultBuffer[j] * (double)num) * 6.0 * spectroScale + (double)amplitudeOffset);
+                                break;
+                            case 2:
+                                fftData[j] = this.ToByte(Math.Max(Math.Log10((double)fftResultBuffer[j] * (double)num), 0.0) * 24.0 * spectroScale + (double)amplitudeOffset);
+                                break;
+                        }
+                    }
+
+
+                    //writerList.ForEach((Action<IWriter>)(x => x.Write(fftData, settings)));
+
+                    OutputViewModel.UpdateImage(fftData, settings, UserSettingsManager.Instance.UserSettings.OsVerticalScale.Value, UserSettingsManager.Instance.UserSettings.OsHighQuality.Value, backgroundColor, foregroundColor);
+
+                    //// this.BeginInvoke((Action)(() => Application.OpenForms.OfType<OutputWindow>().FirstOrDefault<OutputWindow>()?.UpdateImage(fftData, settings, MainForm.Global.OSverticalScale, this.checkBox_HighQualityGraphics.Checked, this.button_OS_BG.BackColor, this.button_OS_FG.BackColor)));
+                    // switch (MainForm.Global.ARXOnScreen)
+                    // {
+                    //     case 1:
+                    //         LogitechArx.LogiArxSetTagContentById("fftData", "");
+                    //         MainForm.Global.ARXOnScreen = 0;
+                    //         break;
+                    //     case 2:
+                    //         LogitechArx.LogiArxSetTagContentById("fftData", string.Join<byte>(",", (IEnumerable<byte>)fftData));
+                    //         break;
+                    // }
+                    Thread.Sleep(refreshDelay);
+                    //TimeSpan timeSpan = DateTime.Now - now;
+                    //now = DateTime.Now;
+                }
+                //else
+                //{
+                //    if (wasapiCapture2 != null)
+                //    {
+                //        wasapiCapture2.Stop();
+                //        wasapiCapture2.Dispose();
+                //        wasapiCapture1 = (WasapiCapture)null;
+                //    }
+                //    waveSource?.Dispose();
+                //    LogitechGSDK.LogiLedSetTargetDevice(MainForm.Global.LogitechAllDevices);
+                //    LogitechGSDK.LogiLedRestoreLighting();
+                //    this._resetEvent.Set();
+                //    return;
+                //}
+            }
+            goto label_5;
+        }
+
+        private byte ToByte(double input)
+        {
+            byte num;
+            try
+            {
+                num = input >= 0.0 ? (input <= (double)byte.MaxValue ? Convert.ToByte(input) : byte.MaxValue) : (byte)0;
+            }
+            catch (OverflowException ex)
+            {
+                num = byte.MaxValue;
+            }
+            return num;
+        }
+
+        public Dictionary<string, MMDevice> GetInputDevices()
+        {
+            //this.comboBox_InputDevice.DataSource = (object)null;
+            Dictionary<string, MMDevice> dictionary = new Dictionary<string, MMDevice>();
+            try
+            {
+                using (MMDeviceEnumerator deviceEnumerator = new MMDeviceEnumerator())
+                {
+                    using (MMDeviceCollection deviceCollection = deviceEnumerator.EnumAudioEndpoints(DataFlow.All, DeviceState.Active))
+                    {
+                        MMDevice defaultAudioEndpoint = deviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Console);
+                        int num = 0;
+                        foreach (MMDevice mmDevice in deviceCollection)
+                        {
+                            //if (mmDevice.FriendlyName == defaultAudioEndpoint.FriendlyName)
+                            //     MainForm.Global.defaultSelectedIndex = num;
+                            if (dictionary.ContainsKey(mmDevice.FriendlyName))
+                                dictionary.Add(mmDevice.FriendlyName + " (" + num.ToString() + ")", mmDevice);
+                            else
+                                dictionary.Add(mmDevice.FriendlyName, mmDevice);
+                            ++num;
+                        }
+                    }
+                    //this.comboBox_InputDevice.DataSource = (object)new BindingSource((object)dictionary, (string)null);
+                    //this.comboBox_InputDevice.DisplayMember = "Value";
+                    //this.comboBox_InputDevice.ValueMember = "Key";
+                    //this.comboBox_InputDevice.SelectedIndex = MainForm.Global.defaultSelectedIndex;
+                }
+            }
+            catch (CoreAudioAPIException ex)
+            {
+                //int num = (int)MessageBox.Show("No input devices were found.", "Input Devices Not Found", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            }
+
+            return dictionary;
+        }
     }
 
+    public static class Global
+    {
+        public static string programVersion = Utilities.getProductVersion();
+        public static string programArch = "";
+        public static string SDKversion = "";
+        public static bool outputWindowOpen = false;
+        public static bool programReady = false;
+        public static bool programActive = true;
+        public static float scale = 1f;
+        public static float OSverticalScale = 2f;
+        public static int defaultSelectedIndex = 0;
+        //public static Color[] gradientColor = new Color[6];
+        //public static Color[] hGradientColor = new Color[23];
+        public static string oldStatusBarMessage = "";
+        public static bool loadSettings = true;
+        public static int LogitechAllDevices = 7;
+        public static bool ARXRunning = false;
+        public static bool ARXActive = false;
+        public static bool sendToARX = true;
+        public static bool jQuerySetQueue = false;
+        public static string jQuerySetQueuedCommands = "";
+        public static int ARXCurrentTab = 0;
+        public static int ARXOnScreen = 0;
+        public static bool firstMinimize = true;
+        public const string programDate = "2016-05-22";
+        public const int numOfDefaultGradientProfiles = 5;
+        public const int numOfCustomGradientProfiles = 10;
+        public const int numOfGradientProfiles = 15;
+        public static DateTime lastUpdateCheck;
+    }
 }

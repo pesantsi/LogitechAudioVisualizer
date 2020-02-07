@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ReactiveUI;
-
-namespace LogitechAudioVisualizer.ViewModels
+﻿namespace LogitechAudioVisualizer.ViewModels
 {
-    public class ViewModelBase : ReactiveObject
+    public abstract class ViewModelBase : ObservableObjectBase
     {
-
 
     }
 }
