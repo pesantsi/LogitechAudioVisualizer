@@ -376,3 +376,15 @@ bin/Debug/netcoreapp3.1/Splat.dll
 bin/Debug/netcoreapp3.1/LogitechAudioVisualizer.Settings.json
 
 bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+
+obj/Debug/netcoreapp3.1/GeneratedInternalTypeHelper.g.cs
+
+obj/Debug/netcoreapp3.1/GeneratedInternalTypeHelper.g.i.cs
+
+obj/Debug/netcoreapp3.1/LogitechAudioVisualizer_MarkupCompile.i.lref
+
+obj/Debug/netcoreapp3.1/Views/OutputUserControl.baml
+
+obj/Debug/netcoreapp3.1/Views/OutputUserControl.g.cs
+
+obj/Debug/netcoreapp3.1/Views/OutputUserControl.g.i.cs

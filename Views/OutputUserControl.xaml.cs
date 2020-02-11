@@ -1,42 +1,43 @@
-﻿using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
-using Avalonia.Media;
-using LogitechAudioVisualizer.ViewModels;
-using System;
+﻿using LogitechAudioVisualizer.Helpers;
 using LogitechAudioVisualizer.Settings;
+using LogitechAudioVisualizer.ViewModels;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace LogitechAudioVisualizer.Views
 {
-    public class OutputUserControl : UserControl
+    public partial class OutputUserControl : UserControl
     {
         private OutputViewModel OutputViewModel { get; set; }
 
         private byte[] FftData { get; set; }
-        //private int[,] Settings { get; set; }
         private int OsVerticalScale { get; set; }
-        //private bool OsHighQuality { get; set; }
         private Color BackgroundColor { get; set; }
         private Color ForegroundColor { get; set; }
+
+        static OutputUserControl()
+        {
+            DataContextProperty.OverrideMetadata(typeof(OutputUserControl), new FrameworkPropertyMetadata(null, OnDataContextPropertyChanged));
+        }
 
         public OutputUserControl()
         {
             InitializeComponent();
         }
 
-        private void InitializeComponent()
+        private static void OnDataContextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            AvaloniaXamlLoader.Load(this);
+            var outputUserControl = d as OutputUserControl;
+            outputUserControl?.SetDataContext(e.NewValue);
         }
 
-        protected override void OnDataContextChanged(EventArgs e)
+        private void SetDataContext(object dataContext)
         {
             if (OutputViewModel != null)
                 OutputViewModel.ImageUpdated -= OnOutputViewModelImageUpdated;
 
-            base.OnDataContextChanged(e);
-
-            OutputViewModel = DataContext as OutputViewModel;
+            OutputViewModel = dataContext as OutputViewModel;
             if (OutputViewModel != null)
                 OutputViewModel.ImageUpdated += OnOutputViewModelImageUpdated;
         }
@@ -44,59 +45,67 @@ namespace LogitechAudioVisualizer.Views
         private void OnOutputViewModelImageUpdated(object sender, ImageUpdatedEventArgs e)
         {
             FftData = e.FftData;
-//             Settings = e.Settings;
             OsVerticalScale = e.OsVerticalScale;
-//             OsHighQuality = e.OsHighQuality;
             BackgroundColor = e.BackgroundColor;
             ForegroundColor = e.ForegroundColor;
 
-            InvalidateVisual();
+            DispatcherHelper.InvokeIfRequired(() => InvalidateVisual());
         }
 
-        public override void Render(DrawingContext drawingContext)
+        protected override void OnRender(DrawingContext drawingContext)
         {
-            int maxValue = byte.MaxValue;
-            float heightScale = (float)Bounds.Height / maxValue;
-
-            Pen pen = new Pen(Colors.Red.ToUint32(), (float)(Bounds.Width / 128));
-            if (UserSettingsManager.Instance.UserSettings.OsKeyboardColors.Value)
+            if (FftData != null)
             {
-                switch (UserSettingsManager.Instance.UserSettings.ColorMode.Value)
+                int maxValue = byte.MaxValue;
+                float heightScale = (float)ActualHeight / maxValue;
+
+                Pen pen;
+                if (UserSettingsManager.Instance.UserSettings.OsKeyboardColors.Value)
                 {
-                    case 0:
-                        DrawRectangle(drawingContext, Bounds.Width, Bounds.Height, BackgroundColor);
-                        pen.Brush = new SolidColorBrush(ForegroundColor);
-                        DrawBars(drawingContext, pen, Bounds.Width, Bounds.Height, FftData, heightScale, OsVerticalScale);
-                        break;
-                    case 1:
-                        DrawRectangle(drawingContext, Bounds.Width, Bounds.Height, BackgroundColor);
-                        PrepareGradientBrush(pen);
-                        DrawBars(drawingContext, pen, Bounds.Width, Bounds.Height, FftData, heightScale, OsVerticalScale);
-                        break;
-                    case 2:
-                        DrawRectangle(drawingContext, Bounds.Width, Bounds.Height, BackgroundColor);
-                        for (int i = 0; i < FftData.Length; ++i)
-                        {
-                            int index = (int)(i * 0.180000007152557);
-                            pen.Brush = new SolidColorBrush(Color.FromUInt32(Convert.ToUInt32(UserSettingsManager.Instance.UserSettings.HGradientColor.Value[index], 16)));
-                            DrawBar(drawingContext, pen, Bounds.Width, Bounds.Height, FftData, heightScale, OsVerticalScale, i);
-                        }
-                        break;
+                    switch (UserSettingsManager.Instance.UserSettings.ColorMode.Value)
+                    {
+                        case 0:
+                            DrawRectangle(drawingContext, ActualWidth, ActualHeight, BackgroundColor);
+                            pen = new Pen() { Thickness = (float)(ActualWidth / 128) };
+                            pen.Brush = new SolidColorBrush(ForegroundColor);
+                            DrawBars(drawingContext, pen, ActualWidth, ActualHeight, FftData, heightScale, OsVerticalScale);
+                            break;
+                        case 1:
+                            pen = new Pen() { Thickness = (float)(ActualWidth / 128) };
+                            DrawRectangle(drawingContext, ActualWidth, ActualHeight, BackgroundColor);
+                            PrepareGradientBrush(pen);
+                            DrawBars(drawingContext, pen, ActualWidth, ActualHeight, FftData, heightScale, OsVerticalScale);
+                            break;
+                        case 2:
+                            DrawRectangle(drawingContext, ActualWidth, ActualHeight, BackgroundColor);
+                            for (int i = 0; i < FftData.Length; ++i)
+                            {
+                                int index = (int)(i * 0.180000007152557);
+                                pen = new Pen() { Thickness = (float)(ActualWidth / 128) };
+                                pen.Brush = new SolidColorBrush((Color)ColorConverter.ConvertFromString(UserSettingsManager.Instance.UserSettings.HGradientColor.Value[index]));
+                                DrawBar(drawingContext, pen, ActualWidth, ActualHeight, FftData, heightScale, OsVerticalScale, i);
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    DrawRectangle(drawingContext, ActualWidth, ActualHeight, BackgroundColor);
+                    pen = new Pen() { Thickness = (float)(ActualWidth / 128) };
+                    pen.Brush = new SolidColorBrush(ForegroundColor);
+                    DrawBars(drawingContext, pen, ActualWidth, ActualHeight, FftData, heightScale, OsVerticalScale);
                 }
             }
-            else
-            {
-                DrawRectangle(drawingContext, Bounds.Width, Bounds.Height, BackgroundColor);
-                pen.Brush = new SolidColorBrush(ForegroundColor);
-                DrawBars(drawingContext, pen, Bounds.Width, Bounds.Height, FftData, heightScale, OsVerticalScale);
-            }
+
+            base.OnRender(drawingContext);
         }
 
         private void PrepareGradientBrush(Pen pen)
         {
             LinearGradientBrush gradientBrush = new LinearGradientBrush();
-            gradientBrush.StartPoint = new RelativePoint(0, 0, RelativeUnit.Absolute);
-            gradientBrush.EndPoint = new RelativePoint(0, Bounds.Height, RelativeUnit.Absolute);
+            gradientBrush.MappingMode = BrushMappingMode.Absolute;
+            gradientBrush.StartPoint = new Point(0, 0);
+            gradientBrush.EndPoint = new Point(0, ActualHeight);
 
             int numColors = UserSettingsManager.Instance.UserSettings.GradientColor.Value.Count;
             for (int index = 0; index < numColors; ++index)
@@ -105,7 +114,7 @@ namespace LogitechAudioVisualizer.Views
                     (
                         new GradientStop
                         (
-                            Color.FromUInt32(Convert.ToUInt32(UserSettingsManager.Instance.UserSettings.GradientColor.Value[index], 16)),
+                            (Color)ColorConverter.ConvertFromString(UserSettingsManager.Instance.UserSettings.GradientColor.Value[index]),
                             (double)index / (numColors - 1)
                         )
                     );
@@ -116,13 +125,16 @@ namespace LogitechAudioVisualizer.Views
 
         private void DrawRectangle(DrawingContext drawingContext, double width, double height, Color color)
         {
-            drawingContext.FillRectangle(new SolidColorBrush(color), new Rect(0, 0, width, height));
+            drawingContext.DrawRectangle(new SolidColorBrush(color), null, new Rect(0, 0, width, height));
         }
 
         private void DrawBar(DrawingContext drawingContext, Pen pen, double width, double height, byte[] fftData, float heightScale, float verticalScale, int i)
         {
-            var from = new Point((float)i * pen.Thickness, (float)height - fftData[i] * heightScale * verticalScale);
-            var to = new Point((float)i * pen.Thickness, (float)height);
+            var x = ((float)i * pen.Thickness) + (pen.Thickness / 2);
+
+            var from = new Point(x, (float)height - fftData[i] * heightScale * verticalScale);
+            var to = new Point(x, (float)height);
+
             drawingContext.DrawLine(pen, from, to);
         }
 

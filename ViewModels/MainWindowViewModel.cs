@@ -1,5 +1,4 @@
-﻿using Avalonia.Media;
-using CSCore;
+﻿using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.DSP;
 using CSCore.SoundIn;
@@ -11,7 +10,8 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using LogitechAudioVisualizer.Settings;
-using System.Text;
+using System.Windows.Media;
+using LogitechSpectrogram.Writers;
 
 namespace LogitechAudioVisualizer.ViewModels
 {
@@ -135,9 +135,9 @@ namespace LogitechAudioVisualizer.ViewModels
 
         private void DoWork()
         {
-            //MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
+            MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
 
-            MMDevice mmDevice = GetInputDevices()["Remote Audio"];
+            //MMDevice mmDevice = GetInputDevices()["Remote Audio"];
 
 
             string keyboardLayout = "US";
@@ -199,7 +199,7 @@ namespace LogitechAudioVisualizer.ViewModels
 
                     //settings[0, 0] = Instance.UserSettings.ColorMode.Value;
                     //settings[0, 1] = Convert.ToInt32(Instance.UserSettings.OsKeyboardColors.Value); //*this.checkBox_UseKeyboardColors.Checked;
-                    settings[0, 2] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.DeviceLighting.Value); // this.checkBox_DeviceLighting.Checked);
+                    //settings[0, 2] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.DeviceLighting.Value); // this.checkBox_DeviceLighting.Checked);
                     settings[0, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.DisableGLights.Value); // this.checkBox_DisableGLights.Checked);
                     switch (UserSettingsManager.Instance.UserSettings.ColorMode.Value)
                     {
@@ -220,7 +220,7 @@ namespace LogitechAudioVisualizer.ViewModels
                             //    settings[index + 2, 1] = gradientColor.G;
                             //    settings[index + 2, 2] = gradientColor.B;
                             //}
-                            settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.VColorWaveEnable.Value);
+                            //settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.VColorWaveEnable.Value);
                             break;
                         case 2:
                             //Color hGradientColor = Color.FromUInt32(UserSettingsManager.Instance.UserSettings.HGradientColor.Value[0]);
@@ -236,7 +236,7 @@ namespace LogitechAudioVisualizer.ViewModels
                             //    settings[index + 2, 1] = hGradientColor.G;
                             //    settings[index + 2, 2] = hGradientColor.B;
                             //}
-                            settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.HColorWaveEnable.Value);
+                            //settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.HColorWaveEnable.Value);
                             break;
                     }
 
@@ -267,7 +267,7 @@ namespace LogitechAudioVisualizer.ViewModels
                     }
 
 
-                    //writerList.ForEach((Action<IWriter>)(x => x.Write(fftData, settings)));
+                    writerList.ForEach((Action<IWriter>)(x => x.Write(fftData, settings)));
 
                     OutputViewModel.UpdateImage(fftData, /*settings,*/ UserSettingsManager.Instance.UserSettings.OsVerticalScale.Value,/* UserSettingsManager.Instance.UserSettings.OsHighQuality.Value,*/ backgroundColor, foregroundColor);
 

@@ -1,14 +1,14 @@
+using LogitechAudioVisualizer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
-using System.Text;
-using ReactiveUI;
+using System.Windows.Threading;
 
 namespace LogitechAudioVisualizer.ViewModels
 {
-    public abstract class ObservableObjectBase : ReactiveObject
+    public abstract class ObservableObjectBase : INotifyPropertyChanged, INotifyPropertyChanging
     {
         protected readonly Dictionary<string, object> _valueByPropertyName;
 
@@ -109,18 +109,37 @@ namespace LogitechAudioVisualizer.ViewModels
 
         #region INotifyPropertyChanged
 
+        [field: NonSerialized]
+        public event PropertyChangedEventHandler PropertyChanged;
+
         protected virtual void OnPropertyChanged(string propertyName)
         {
-            this.RaisePropertyChanged(propertyName);
+            PropertyChangedEventHandler propertyChanged = PropertyChanged;
+            if (propertyChanged == null)
+                return;
+
+            DispatcherHelper.BeginInvokeIfRequired(
+                () => propertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName)),
+                DispatcherPriority.DataBind
+            );
         }
 
         #endregion
 
         #region INotifyPropertyChanging
 
+        public event PropertyChangingEventHandler PropertyChanging;
+
         protected virtual void OnPropertyChanging(string propertyName)
         {
-            this.RaisePropertyChanging(propertyName);
+            PropertyChangingEventHandler propertyChanging = PropertyChanging;
+            if (propertyChanging == null)
+                return;
+
+            DispatcherHelper.BeginInvokeIfRequired(
+                () => propertyChanging.Invoke(this, new PropertyChangingEventArgs(propertyName)),
+                DispatcherPriority.DataBind
+            );
         }
 
         #endregion

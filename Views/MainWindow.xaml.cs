@@ -1,19 +1,15 @@
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Markup.Xaml;
+using LogitechAudioVisualizer.ViewModels;
+using System.Windows;
 
 namespace LogitechAudioVisualizer.Views
 {
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-        }
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
+            this.DataContext = new MainWindowViewModel();
         }
     }
 }

@@ -1,29 +1,33 @@
-using Avalonia;
-using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Markup.Xaml;
+using LedCSharp;
+using LogitechAudioVisualizer.Settings;
 using LogitechAudioVisualizer.ViewModels;
 using LogitechAudioVisualizer.Views;
+using System.Windows;
 
 namespace LogitechAudioVisualizer
 {
-    public class App : Application
+    public partial class App : Application
     {
-        public override void Initialize()
+        protected override void OnStartup(StartupEventArgs e)
         {
-            AvaloniaXamlLoader.Load(this);
+            base.OnStartup(e);
+
+            if (LogitechGSDK.LogiLedInit())
+            {
+                LogitechGSDK.LogiLedSetTargetDevice(LogitechGSDK.LOGI_DEVICETYPE_ALL);
+                LogitechGSDK.LogiLedSaveCurrentLighting();
+
+                UserSettingsManager.Instance.Init();
+                
+                LogitechGSDK.LogiLedRestoreLighting();
+            }
         }
 
-        public override void OnFrameworkInitializationCompleted()
+        protected override void OnExit(ExitEventArgs e)
         {
-            if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainWindowViewModel(),
-                };
-            }
+            LogitechGSDK.LogiLedShutdown();
 
-            base.OnFrameworkInitializationCompleted();
+            base.OnExit(e);
         }
     }
 }
