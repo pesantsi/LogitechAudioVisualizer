@@ -1,4 +1,5 @@
-﻿using CSCore;
+﻿using Avalonia.Media;
+using CSCore;
 using CSCore.CoreAudioAPI;
 using CSCore.DSP;
 using CSCore.SoundIn;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using LogitechAudioVisualizer.Settings;
-using Avalonia.Media;
+using System.Text;
 
 namespace LogitechAudioVisualizer.ViewModels
 {
@@ -134,8 +135,6 @@ namespace LogitechAudioVisualizer.ViewModels
 
         private void DoWork()
         {
-            var t = UserSettingsManager.Instance.UserSettings;
-
             //MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
 
             MMDevice mmDevice = GetInputDevices()["Remote Audio"];
@@ -186,15 +185,6 @@ namespace LogitechAudioVisualizer.ViewModels
             waveSource.DataAvailable += (EventHandler<DataAvailableEventArgs>)((s, f) => finalSource.Read(audioBuffer, 0, audioBuffer.Length));
             wasapiCapture2.Start();
 
-            //Random random = new Random();
-            //for(int i=0; i<Global.gradientColor.Length; i++)
-            //{
-            //    Global.gradientColor[i] = Color.FromArgb(random.Next(256), random.Next(256), random.Next(256));
-            //}
-
-            Color backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.BgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.BgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.BgBlue.Value);
-            Color foregroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.FgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.FgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.FgBlue.Value);
-
             OutputViewModel = new OutputViewModel();
 
             label_5:
@@ -204,47 +194,48 @@ namespace LogitechAudioVisualizer.ViewModels
                 {
                     // this.Invoke((Action)(() =>
                     //{
+                    Color backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.BgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.BgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.BgBlue.Value);
+                    Color foregroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.FgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.FgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.FgBlue.Value);
 
-                    settings[0, 0] = UserSettingsManager.Instance.UserSettings.ColorMode.Value;
-                    settings[0, 1] = Convert.ToInt32(true); //*this.checkBox_UseKeyboardColors.Checked;
-                    settings[0, 2] = Convert.ToInt32(true); // this.checkBox_DeviceLighting.Checked);
-                    settings[0, 3] = Convert.ToInt32(true); // this.checkBox_DisableGLights.Checked);
+                    //settings[0, 0] = Instance.UserSettings.ColorMode.Value;
+                    //settings[0, 1] = Convert.ToInt32(Instance.UserSettings.OsKeyboardColors.Value); //*this.checkBox_UseKeyboardColors.Checked;
+                    settings[0, 2] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.DeviceLighting.Value); // this.checkBox_DeviceLighting.Checked);
+                    settings[0, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.DisableGLights.Value); // this.checkBox_DisableGLights.Checked);
                     switch (UserSettingsManager.Instance.UserSettings.ColorMode.Value)
                     {
                         case 0:
-                            settings[1, 0] = backgroundColor.R;
-                            settings[1, 1] = backgroundColor.G;
-                            settings[1, 2] = backgroundColor.B;
-                            settings[2, 0] = foregroundColor.R;
-                            settings[2, 1] = foregroundColor.G;
-                            settings[2, 2] = foregroundColor.B;
+                            //settings[1, 0] = backgroundColor.R;
+                            //settings[1, 1] = backgroundColor.G;
+                            //settings[1, 2] = backgroundColor.B;
+                            //settings[2, 0] = foregroundColor.R;
+                            //settings[2, 1] = foregroundColor.G;
+                            //settings[2, 2] = foregroundColor.B;
                             break;
                         case 1:
-                            for (int index = 0; index < UserSettingsManager.Instance.UserSettings.GradientColor.Value.Count; ++index)
-                            {
-                                Color gradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.GradientColor.Value[index]);
+                            //for (int index = 0; index < UserSettingsManager.Instance.UserSettings.GradientColor.Value.Count; ++index)
+                            //{
+                            //    Color gradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.GradientColor.Value[index]);
 
-                                settings[index + 2, 0] = gradientColor.R;
-                                settings[index + 2, 1] = gradientColor.G;
-                                settings[index + 2, 2] = gradientColor.B;
-                            }
+                            //    settings[index + 2, 0] = gradientColor.R;
+                            //    settings[index + 2, 1] = gradientColor.G;
+                            //    settings[index + 2, 2] = gradientColor.B;
+                            //}
                             settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.VColorWaveEnable.Value);
                             break;
                         case 2:
+                            //Color hGradientColor = Color.FromUInt32(UserSettingsManager.Instance.UserSettings.HGradientColor.Value[0]);
 
-                            Color hGradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.HGradientColor.Value[1]);
+                            //settings[2, 0] = hGradientColor.R;
+                            //settings[2, 1] = hGradientColor.G;
+                            //settings[2, 2] = hGradientColor.B;
+                            //for (int index = 0; index < UserSettingsManager.Instance.UserSettings.HGradientColor.Value.Count; ++index)
+                            //{
+                            //    Color hGradientColor = Color.FromUInt32(UserSettingsManager.Instance.UserSettings.HGradientColor.Value[index]);
 
-                            settings[2, 0] = hGradientColor.R;
-                            settings[2, 1] = hGradientColor.G;
-                            settings[2, 2] = hGradientColor.B;
-                            for (int index = 1; index < UserSettingsManager.Instance.UserSettings.HGradientColor.Value.Count; ++index)
-                            {
-                                hGradientColor = Color.FromUInt32((uint)UserSettingsManager.Instance.UserSettings.HGradientColor.Value[index]);
-
-                                settings[index + 2, 0] = hGradientColor.R;
-                                settings[index + 2, 1] = hGradientColor.G;
-                                settings[index + 2, 2] = hGradientColor.B;
-                            }
+                            //    settings[index + 2, 0] = hGradientColor.R;
+                            //    settings[index + 2, 1] = hGradientColor.G;
+                            //    settings[index + 2, 2] = hGradientColor.B;
+                            //}
                             settings[2, 3] = Convert.ToInt32(UserSettingsManager.Instance.UserSettings.HColorWaveEnable.Value);
                             break;
                     }
@@ -264,13 +255,13 @@ namespace LogitechAudioVisualizer.ViewModels
                         switch (amplitudeScaleType)
                         {
                             case 0:
-                                fftData[j] = this.ToByte((double)fftResultBuffer[j] * num * spectroScale + (double)amplitudeOffset);
+                                fftData[j] = ToByte((double)fftResultBuffer[j] * num * spectroScale + (double)amplitudeOffset);
                                 break;
                             case 1:
-                                fftData[j] = this.ToByte(Math.Sqrt((double)fftResultBuffer[j] * (double)num) * 6.0 * spectroScale + (double)amplitudeOffset);
+                                fftData[j] = ToByte(Math.Sqrt((double)fftResultBuffer[j] * (double)num) * 6.0 * spectroScale + (double)amplitudeOffset);
                                 break;
                             case 2:
-                                fftData[j] = this.ToByte(Math.Max(Math.Log10((double)fftResultBuffer[j] * (double)num), 0.0) * 24.0 * spectroScale + (double)amplitudeOffset);
+                                fftData[j] = ToByte(Math.Max(Math.Log10((double)fftResultBuffer[j] * (double)num), 0.0) * 24.0 * spectroScale + (double)amplitudeOffset);
                                 break;
                         }
                     }
@@ -278,7 +269,7 @@ namespace LogitechAudioVisualizer.ViewModels
 
                     //writerList.ForEach((Action<IWriter>)(x => x.Write(fftData, settings)));
 
-                    OutputViewModel.UpdateImage(fftData, settings, UserSettingsManager.Instance.UserSettings.OsVerticalScale.Value, UserSettingsManager.Instance.UserSettings.OsHighQuality.Value, backgroundColor, foregroundColor);
+                    OutputViewModel.UpdateImage(fftData, /*settings,*/ UserSettingsManager.Instance.UserSettings.OsVerticalScale.Value,/* UserSettingsManager.Instance.UserSettings.OsHighQuality.Value,*/ backgroundColor, foregroundColor);
 
                     //// this.BeginInvoke((Action)(() => Application.OpenForms.OfType<OutputWindow>().FirstOrDefault<OutputWindow>()?.UpdateImage(fftData, settings, MainForm.Global.OSverticalScale, this.checkBox_HighQualityGraphics.Checked, this.button_OS_BG.BackColor, this.button_OS_FG.BackColor)));
                     // switch (MainForm.Global.ARXOnScreen)
@@ -365,34 +356,34 @@ namespace LogitechAudioVisualizer.ViewModels
         }
     }
 
-    public static class Global
-    {
-        public static string programVersion = Utilities.getProductVersion();
-        public static string programArch = "";
-        public static string SDKversion = "";
-        public static bool outputWindowOpen = false;
-        public static bool programReady = false;
-        public static bool programActive = true;
-        public static float scale = 1f;
-        public static float OSverticalScale = 2f;
-        public static int defaultSelectedIndex = 0;
-        //public static Color[] gradientColor = new Color[6];
-        //public static Color[] hGradientColor = new Color[23];
-        public static string oldStatusBarMessage = "";
-        public static bool loadSettings = true;
-        public static int LogitechAllDevices = 7;
-        public static bool ARXRunning = false;
-        public static bool ARXActive = false;
-        public static bool sendToARX = true;
-        public static bool jQuerySetQueue = false;
-        public static string jQuerySetQueuedCommands = "";
-        public static int ARXCurrentTab = 0;
-        public static int ARXOnScreen = 0;
-        public static bool firstMinimize = true;
-        public const string programDate = "2016-05-22";
-        public const int numOfDefaultGradientProfiles = 5;
-        public const int numOfCustomGradientProfiles = 10;
-        public const int numOfGradientProfiles = 15;
-        public static DateTime lastUpdateCheck;
-    }
+    //public static class Global
+    //{
+    //    public static string programVersion = Utilities.getProductVersion();
+    //    public static string programArch = "";
+    //    public static string SDKversion = "";
+    //    public static bool outputWindowOpen = false;
+    //    public static bool programReady = false;
+    //    public static bool programActive = true;
+    //    public static float scale = 1f;
+    //    public static float OSverticalScale = 2f;
+    //    public static int defaultSelectedIndex = 0;
+    //    //public static Color[] gradientColor = new Color[6];
+    //    //public static Color[] hGradientColor = new Color[23];
+    //    public static string oldStatusBarMessage = "";
+    //    public static bool loadSettings = true;
+    //    public static int LogitechAllDevices = 7;
+    //    public static bool ARXRunning = false;
+    //    public static bool ARXActive = false;
+    //    public static bool sendToARX = true;
+    //    public static bool jQuerySetQueue = false;
+    //    public static string jQuerySetQueuedCommands = "";
+    //    public static int ARXCurrentTab = 0;
+    //    public static int ARXOnScreen = 0;
+    //    public static bool firstMinimize = true;
+    //    public const string programDate = "2016-05-22";
+    //    public const int numOfDefaultGradientProfiles = 5;
+    //    public const int numOfCustomGradientProfiles = 10;
+    //    public const int numOfGradientProfiles = 15;
+    //    public static DateTime lastUpdateCheck;
+    //}
 }

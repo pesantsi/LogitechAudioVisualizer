@@ -12,7 +12,7 @@ namespace LogitechAudioVisualizer.Settings
             m_watcher = new FileSystemWatcher();
             m_watcher.Path = Directory.GetCurrentDirectory();
             m_watcher.Filter = "*.json";
-            m_watcher.NotifyFilter = System.IO.NotifyFilters.LastWrite;
+            m_watcher.NotifyFilter = NotifyFilters.LastWrite;
             m_watcher.Changed += OnFileChanged;
 
             m_watcher.EnableRaisingEvents = true;

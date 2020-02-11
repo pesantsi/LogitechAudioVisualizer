@@ -43,7 +43,7 @@ namespace LogitechAudioVisualizer.Settings
         public IntClass ColorMode { get; set; }
 
         [JsonProperty("gradientColor")]
-        public IntListClass GradientColor { get; set; }
+        public StringListClass GradientColor { get; set; }
 
         [JsonProperty("verticalProfiles")]
         public StringListClass VerticalProfiles { get; set; }
@@ -133,7 +133,7 @@ namespace LogitechAudioVisualizer.Settings
         public IntClass HColorWaveDirection { get; set; }
 
         [JsonProperty("hGradientColor")]
-        public IntListClass HGradientColor { get; set; }
+        public StringListClass HGradientColor { get; set; }
 
         public static UserSettings FromJson(string json) => JsonConvert.DeserializeObject<UserSettings>(json, Converter.Settings);
 
@@ -152,10 +152,10 @@ namespace LogitechAudioVisualizer.Settings
         public bool Value { get; set; }
     }
 
-    public partial class IntListClass
+    public partial class UIntListClass
     {
         [JsonProperty("value")]
-        public List<int> Value { get; set; }
+        public List<uint> Value { get; set; }
     }
 
     public partial class StringClass

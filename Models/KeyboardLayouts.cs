@@ -1316,8 +1316,8 @@ public class KeyboardLayouts
           {
             if (layout == "RU")
             {
-              position = KeyboardLayouts.position_RU;
-              size = KeyboardLayouts.size_RU;
+              position = position_RU;
+              size = size_RU;
             }
             else
             {
@@ -1327,26 +1327,26 @@ public class KeyboardLayouts
           }
           else
           {
-            position = KeyboardLayouts.position_KOR;
-            size = KeyboardLayouts.size_KOR;
+            position = position_KOR;
+            size = size_KOR;
           }
         }
         else
         {
-          position = KeyboardLayouts.position_JPN;
-          size = KeyboardLayouts.size_JPN;
+          position = position_JPN;
+          size = size_JPN;
         }
       }
       else
       {
-        position = KeyboardLayouts.position_INTL;
-        size = KeyboardLayouts.size_INTL;
+        position = position_INTL;
+        size = size_INTL;
       }
     }
     else
     {
-      position = KeyboardLayouts.position_US;
-      size = KeyboardLayouts.size_US;
+      position = position_US;
+      size = size_US;
     }
   }
 }
