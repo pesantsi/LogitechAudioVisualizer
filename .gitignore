@@ -3,3 +3,7 @@
 ################################################################################
 
 /.vs/LogitechAudioVisualizer
+/bin/Debug
+/obj/Debug
+/packages
+*.user

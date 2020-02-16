@@ -103,7 +103,7 @@ namespace LogitechAudioVisualizer.ViewModels
                 Task.Run(DoWork);
 
             }
-            catch (DllNotFoundException ex)
+            catch (DllNotFoundException)
             {
                 // int num = (int)MessageBox.Show("The file \"LogitechLedEnginesWrapper.dll\" could not be found.\nRefer to the FAQ for possible solutions. This program will now exit.\n\n" + ex.Message, "DLL Missing: LogitechLedEnginesWrapper", MessageBoxButtons.OK, MessageBoxIcon.Hand);
                 //Environment.Exit(0);
@@ -311,7 +311,7 @@ namespace LogitechAudioVisualizer.ViewModels
             {
                 num = input >= 0.0 ? (input <= (double)byte.MaxValue ? Convert.ToByte(input) : byte.MaxValue) : (byte)0;
             }
-            catch (OverflowException ex)
+            catch (OverflowException)
             {
                 num = byte.MaxValue;
             }
@@ -347,7 +347,7 @@ namespace LogitechAudioVisualizer.ViewModels
                     //this.comboBox_InputDevice.SelectedIndex = MainForm.Global.defaultSelectedIndex;
                 }
             }
-            catch (CoreAudioAPIException ex)
+            catch (CoreAudioAPIException)
             {
                 //int num = (int)MessageBox.Show("No input devices were found.", "Input Devices Not Found", MessageBoxButtons.OK, MessageBoxIcon.Hand);
             }

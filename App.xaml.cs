@@ -1,7 +1,5 @@
 using LedCSharp;
 using LogitechAudioVisualizer.Settings;
-using LogitechAudioVisualizer.ViewModels;
-using LogitechAudioVisualizer.Views;
 using System;
 using System.Windows;
 
