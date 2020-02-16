@@ -28,7 +28,7 @@ namespace LogitechAudioVisualizer.Settings
 
         private void LoadUserSettings()
         {
-            while(!CheckFile())
+            while (!CheckFile())
             {
                 Thread.Sleep(500);
             }

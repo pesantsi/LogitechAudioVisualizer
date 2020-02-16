@@ -18,17 +18,7 @@ namespace LogitechSpectrogram.Writers
             if (!UserSettingsManager.Instance.UserSettings.DeviceLighting.Value)
                 return;
 
-            //bool flag = false;
-            //for (int index = 0; index < fftData.Length / 2; ++index)
-            //{
-            //    if (fftData[index] > 0)
-            //    {
-            //        flag = true;
-            //        break;
-            //    }
-            //}
-
-                        LogitechGSDK.LogiLedSetTargetDevice(3);
+            LogitechGSDK.LogiLedSetTargetDevice(3);
             if (fftData.Any(d => d > 0))
             {
                 Color foregroundColor;

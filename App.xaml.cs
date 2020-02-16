@@ -2,12 +2,18 @@ using LedCSharp;
 using LogitechAudioVisualizer.Settings;
 using LogitechAudioVisualizer.ViewModels;
 using LogitechAudioVisualizer.Views;
+using System;
 using System.Windows;
 
 namespace LogitechAudioVisualizer
 {
     public partial class App : Application
     {
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+        }
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -18,8 +24,12 @@ namespace LogitechAudioVisualizer
                 LogitechGSDK.LogiLedSaveCurrentLighting();
 
                 UserSettingsManager.Instance.Init();
-                
+
                 LogitechGSDK.LogiLedRestoreLighting();
+            }
+            else
+            {
+                throw new Exception("Unable to log to Logitech G SDK.");
             }
         }
 
