@@ -7,11 +7,6 @@ namespace LogitechAudioVisualizer
 {
     public partial class App : Application
     {
-        protected override void OnActivated(EventArgs e)
-        {
-            base.OnActivated(e);
-        }
-
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

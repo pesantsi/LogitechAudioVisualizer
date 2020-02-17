@@ -39,18 +39,19 @@ namespace LogitechSpectrogram.Writers
             {
                 Color foregroundColor;
                 Color backgroundColor;
+                Color keyColor;
                 switch (UserSettingsManager.Instance.UserSettings.ColorMode.Value)
                 {                   
                     case 0:
                         switch (keyLightArray[position])
                         {
                             case 0:
-                                foregroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.FgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.FgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.FgBlue.Value);
-                                SetLED(position, foregroundColor.R, foregroundColor.G, foregroundColor.B);
+                                backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.BgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.BgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.BgBlue.Value);
+                                SetLED(position, backgroundColor.R, backgroundColor.G, backgroundColor.B);
                                 continue;
                             case 1:
-                                backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.FgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.FgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.FgBlue.Value);
-                                SetLED(position, backgroundColor.R, backgroundColor.G, backgroundColor.B);
+                                foregroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.FgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.FgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.FgBlue.Value);
+                                SetLED(position, foregroundColor.R, foregroundColor.G, foregroundColor.B);
                                 continue;
                             default:
                                 continue;
@@ -59,7 +60,8 @@ namespace LogitechSpectrogram.Writers
                         switch (keyLightArray[position])
                         {
                             case 0:
-                                SetLED(position, 0, 0, 0);
+                                backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.BgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.BgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.BgBlue.Value);
+                                SetLED(position, backgroundColor.R, backgroundColor.G, backgroundColor.B);
                                 continue;
                             case 2:
                             case 3:
@@ -67,7 +69,8 @@ namespace LogitechSpectrogram.Writers
                             case 5:
                             case 6:
                             case 7:
-                                SetLED(position, settings[keyLightArray[position], 0], settings[keyLightArray[position], 1], settings[keyLightArray[position], 2]);
+                                keyColor = (Color)ColorConverter.ConvertFromString(UserSettingsManager.Instance.UserSettings.GradientColor.Value[keyLightArray[position]]);
+                                SetLED(position, keyColor.R, keyColor.G, keyColor.B);
                                 continue;
                             default:
                                 continue;
@@ -75,10 +78,12 @@ namespace LogitechSpectrogram.Writers
                     case 2:
                         if (keyLightArray[position] == 0)
                         {
-                            SetLED(position, 0, 0, 0);
+                            backgroundColor = Color.FromRgb((byte)UserSettingsManager.Instance.UserSettings.BgRed.Value, (byte)UserSettingsManager.Instance.UserSettings.BgGreen.Value, (byte)UserSettingsManager.Instance.UserSettings.BgBlue.Value);
+                            SetLED(position, backgroundColor.R, backgroundColor.G, backgroundColor.B);
                             break;
                         }
-                        SetLED(position, settings[keyLightArray[position], 0], settings[keyLightArray[position], 1], settings[keyLightArray[position], 2]);
+                        keyColor = (Color)ColorConverter.ConvertFromString(UserSettingsManager.Instance.UserSettings.HGradientColor.Value[keyLightArray[position]]);
+                        SetLED(position, keyColor.R, keyColor.G, keyColor.B);
                         break;
                 }
             }
@@ -95,10 +100,10 @@ namespace LogitechSpectrogram.Writers
                     keyLightArray[index] = 1;
                     break;
                 case 1:
-                    keyLightArray[index] = y + 1;
+                    keyLightArray[index] = y - 1;
                     break;
                 case 2:
-                    keyLightArray[index] = x / 4 + 2;
+                    keyLightArray[index] = x / 4;
                     break;
             }
         }

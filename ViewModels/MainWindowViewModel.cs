@@ -135,9 +135,9 @@ namespace LogitechAudioVisualizer.ViewModels
 
         private void DoWork()
         {
-            //MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
+            MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
 
-            MMDevice mmDevice = GetInputDevices()["Remote Audio"];
+            //MMDevice mmDevice = GetInputDevices()["Remote Audio"];
 
 
             string keyboardLayout = "US";

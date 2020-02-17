@@ -9,7 +9,7 @@
     "BGRed": { "value": 90 },
     "BGGreen": { "value": 90 },
     "BGBlue": { "value": 90 },
-    "colorMode": { "value": 1 },
+    "colorMode": { "value": 2 },
     "gradientColor": {
         "value": [
             "#FFFF0000",
