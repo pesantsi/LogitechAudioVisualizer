@@ -7,7 +7,8 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - name: Checkout
+      uses: actions/checkout@v2
 
    # - name: Setup MSBuild.exe
    #   uses: warrenbuckley/Setup-MSBuild@v1
@@ -24,13 +25,14 @@ jobs:
           .\MSBuild.exe $Env:GITHUB_WORKSPACE\LogitechAudioVisualizer.sln /t:Build /p:Configuration=Release
 
 
-    - uses: montudor/action-zip@v0.1.0
-      with:
-          args: zip -qq -r ./LogitechAudioVisualizer/Output/LogitechAudioVisualizer.zip ./LogitechAudioVisualizer/Output
-    - uses: actions/upload-artifact@master
-      with:
-        name: LogitechAudioVisualizer
-        path: ./LogitechAudioVisualizer/Output
+    #- uses: montudor/action-zip@v0.1.0
+    #  with:
+    #      args: zip -qq -r ./LogitechAudioVisualizer/Output/LogitechAudioVisualizer.zip ./LogitechAudioVisualizer/Output
+    #- uses: actions/upload-artifact@master
+    #  with:
+    #    name: LogitechAudioVisualizer
+    #    path: ./LogitechAudioVisualizer/Output
+    
     #- name: MSBuild
     #  working-directory: "D:\a\LogitechAudioVisualizer\LogitechAudioVisualizer"
     #  run: msbuild LogitechAudioVisualizer.sln
