@@ -44,8 +44,8 @@ jobs:
       run: echo $GITHUB_BASE_REF
 
     - name: MSBuild
-      working-directory: src
-      run: msbuild ./LogitechAudioVisualizer/LogitechAudioVisualizer.sln
+      working-directory: "D:\a\LogitechAudioVisualizer\LogitechAudioVisualizer"
+      run: msbuild LogitechAudioVisualizer.sln
       
 #name: Windows
 
