@@ -13,7 +13,7 @@ jobs:
       uses: warrenbuckley/Setup-MSBuild@v1
 
     - name: MSBuild
-      working-directory: src
+      working-directory: src\LogitechAudioVisualizer
       run: msbuild LogitechAudioVisualizer.sln
       
 #name: Windows
