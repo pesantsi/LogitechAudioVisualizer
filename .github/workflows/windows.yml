@@ -21,8 +21,16 @@ jobs:
     - name: Build Logitech Audio Visualizer
       run: |
           cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
-          .\MSBuild.exe $Env:GITHUB_WORKSPACE\LogitechAudioVisualizer.sln  
+          .\MSBuild.exe $Env:GITHUB_WORKSPACE\LogitechAudioVisualizer.sln /t:Build /p:Configuration=Release
 
+
+    - uses: montudor/action-zip@v0.1.0
+      with:
+          args: zip -qq -r ./LogitechAudioVisualizer/Output/LogitechAudioVisualizer.zip ./LogitechAudioVisualizer/Output
+    - uses: actions/upload-artifact@master
+      with:
+        name: LogitechAudioVisualizer
+        path: ./LogitechAudioVisualizer/Output
     #- name: MSBuild
     #  working-directory: "D:\a\LogitechAudioVisualizer\LogitechAudioVisualizer"
     #  run: msbuild LogitechAudioVisualizer.sln
