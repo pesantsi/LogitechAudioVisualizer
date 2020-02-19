@@ -100,7 +100,10 @@ namespace LogitechAudioVisualizer.ViewModels
                 LogitechGSDK.LogiLedGetSdkVersion(ref sdkVersion.MajorNum, ref sdkVersion.MinorNum, ref sdkVersion.BuildNum);
                 SdkVersionString = sdkVersion.ToString();
 
-                Task.Run(DoWork);
+
+                Task task = new Task(DoWork, TaskCreationOptions.LongRunning);
+                task.Start();
+                //var t = Task.Run(DoWork, );
 
             }
             catch (DllNotFoundException)
@@ -135,9 +138,9 @@ namespace LogitechAudioVisualizer.ViewModels
 
         private void DoWork()
         {
-            MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
+            //MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
 
-            //MMDevice mmDevice = GetInputDevices()["Remote Audio"];
+            MMDevice mmDevice = GetInputDevices()["Remote Audio"];
 
 
             string keyboardLayout = "US";

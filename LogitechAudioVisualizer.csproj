@@ -40,7 +40,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>chart-bar-stacked.ico</ApplicationIcon>
+    <ApplicationIcon>chart-bar-stacked_black.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>LogitechAudioVisualizer.App</StartupObject>
@@ -288,6 +288,9 @@
     <None Include="LogitechLedEnginesWrapper.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="chart-bar-stacked_black.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\LogitechAudioVisualizer\packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets" Condition="Exists('..\LogitechAudioVisualizer\packages\MaterialDesignThemes.3.0.1\build\MaterialDesignThemes.targets')" />

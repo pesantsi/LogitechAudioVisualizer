@@ -132,7 +132,7 @@ namespace LogitechAudioVisualizer.Views
         {
             var x = ((float)i * pen.Thickness) + (pen.Thickness / 2);
 
-            var from = new Point(x, (float)height - fftData[i] * heightScale * verticalScale);
+            var from = new Point(x, System.Math.Max((float)height - fftData[i] * heightScale * verticalScale, 0));
             var to = new Point(x, (float)height);
 
             drawingContext.DrawLine(pen, from, to);
