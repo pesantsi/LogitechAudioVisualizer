@@ -4,7 +4,6 @@ using CSCore.DSP;
 using CSCore.SoundIn;
 using CSCore.Streams;
 using LedCSharp;
-using LogitechSpectrogram;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -12,13 +11,13 @@ using System.Threading.Tasks;
 using LogitechAudioVisualizer.Settings;
 using System.Windows.Media;
 using LogitechSpectrogram.Writers;
+using System.Windows.Input;
+using Prism.Commands;
 
 namespace LogitechAudioVisualizer.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public string Greeting => "Hello World!";
-
         public string SdkVersionString
         {
             get => Get<string>();
@@ -31,8 +30,41 @@ namespace LogitechAudioVisualizer.ViewModels
             set => Set(value);
         }
 
+        public ICommand OpenCommand { get; }
+
+        public ICommand CloseCommand { get; }
+
+        private Task m_runner;
+        private CancellationTokenSource m_cancellationTokenSource = new CancellationTokenSource();
+
         public MainWindowViewModel()
         {
+            try
+            {           
+                OpenCommand = new DelegateCommand(() => App.Current.MainWindow.Show());
+                CloseCommand = new DelegateCommand(() =>
+                {
+                    m_cancellationTokenSource.Cancel();
+                    App.Current.Shutdown();
+                });
+
+                OutputViewModel = new OutputViewModel();
+
+                var sdkVersion = new LogiLedSdkVersion();
+                LogitechGSDK.LogiLedGetSdkVersion(ref sdkVersion.MajorNum, ref sdkVersion.MinorNum, ref sdkVersion.BuildNum);
+                SdkVersionString = sdkVersion.ToString();
+
+                m_runner = new Task(DoWork, m_cancellationTokenSource.Token, TaskCreationOptions.LongRunning);
+                m_runner.Start();
+                //var t = Task.Run(DoWork, );
+
+            }
+            catch (DllNotFoundException)
+            {
+                // int num = (int)MessageBox.Show("The file \"LogitechLedEnginesWrapper.dll\" could not be found.\nRefer to the FAQ for possible solutions. This program will now exit.\n\n" + ex.Message, "DLL Missing: LogitechLedEnginesWrapper", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                //Environment.Exit(0);
+            }
+
             //try
             //{
             //    this.InitializeComponent();
@@ -94,23 +126,7 @@ namespace LogitechAudioVisualizer.ViewModels
             //    }
             //}
 
-            try
-            {
-                var sdkVersion = new LogiLedSdkVersion();
-                LogitechGSDK.LogiLedGetSdkVersion(ref sdkVersion.MajorNum, ref sdkVersion.MinorNum, ref sdkVersion.BuildNum);
-                SdkVersionString = sdkVersion.ToString();
 
-
-                Task task = new Task(DoWork, TaskCreationOptions.LongRunning);
-                task.Start();
-                //var t = Task.Run(DoWork, );
-
-            }
-            catch (DllNotFoundException)
-            {
-                // int num = (int)MessageBox.Show("The file \"LogitechLedEnginesWrapper.dll\" could not be found.\nRefer to the FAQ for possible solutions. This program will now exit.\n\n" + ex.Message, "DLL Missing: LogitechLedEnginesWrapper", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                //Environment.Exit(0);
-            }
 
             //try
             //{
@@ -188,11 +204,17 @@ namespace LogitechAudioVisualizer.ViewModels
             waveSource.DataAvailable += (EventHandler<DataAvailableEventArgs>)((s, f) => finalSource.Read(audioBuffer, 0, audioBuffer.Length));
             wasapiCapture2.Start();
 
-            OutputViewModel = new OutputViewModel();
-
-            label_5:
+            while(!m_cancellationTokenSource.Token.IsCancellationRequested)
             //for (int i = 0; i < 2; ++i)
             {
+                // Poll on this property if you have to do
+                // other cleanup before throwing.
+                //if (m_cancellationTokenSource.Token.IsCancellationRequested)
+                //{
+                //    // Clean up here, then...
+                //    m_cancellationTokenSource.Token.ThrowIfCancellationRequested();
+                //}
+
                 // if (!this.backgroundWorker_Main.CancellationPending)
                 {
                     // this.Invoke((Action)(() =>
@@ -304,7 +326,8 @@ namespace LogitechAudioVisualizer.ViewModels
                 //    return;
                 //}
             }
-            goto label_5;
+
+            wasapiCapture2.Stop();
         }
 
         private byte ToByte(double input)

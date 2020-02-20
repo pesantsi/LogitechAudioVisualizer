@@ -33,9 +33,18 @@
         <tb:TaskbarIcon x:Name="myNotifyIcon"
                     Visibility="Visible"
                     ToolTipText="Logitech Audio Visualizer"
-                    MenuActivation="LeftOrRightClick"
+                    MenuActivation="RightClick"
                     PopupActivation="DoubleClick"
-                    IconSource="../chart-bar-stacked.ico"/>
+                    IconSource="../chart-bar-stacked.ico"
+                    DoubleClickCommand="{Binding OpenCommand}">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Launch Visualizer" Command="{Binding OpenCommand}" />
+                    <Separator/>
+                    <MenuItem Header="Close" Command="{Binding CloseCommand}"/>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
 
         <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding SdkVersionString}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <localV:OutputUserControl Grid.Column="1" Grid.Row="1" DataContext="{Binding OutputViewModel}" />
