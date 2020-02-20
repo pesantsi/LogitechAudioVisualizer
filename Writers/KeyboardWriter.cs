@@ -20,7 +20,7 @@ namespace LogitechSpectrogram.Writers
             //this.form = form;
         }
 
-        public void Write(byte[] fftData, int[,] settings)
+        public void Write(byte[] fftData)
         {
             Array.Clear(keyLightArray, 0, keyLightArray.Length);
             ++loopNumber;

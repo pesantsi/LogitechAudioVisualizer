@@ -2,6 +2,6 @@
 {
     public interface IWriter
     {
-        void Write(byte[] fftData, int[,] settings);
+        void Write(byte[] fftData);
     }
 }

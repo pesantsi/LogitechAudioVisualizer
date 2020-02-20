@@ -13,7 +13,7 @@ namespace LogitechSpectrogram.Writers
         private int hGradientPosition = 16;
         private bool hGradientForward = true;
 
-        public void Write(byte[] fftData, int[,] settings)
+        public void Write(byte[] fftData)
         {
             if (!UserSettingsManager.Instance.UserSettings.DeviceLighting.Value)
                 return;
