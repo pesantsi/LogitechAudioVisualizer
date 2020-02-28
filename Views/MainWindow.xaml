@@ -40,6 +40,7 @@
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Launch Visualizer" Command="{Binding OpenCommand}" />
+                    <MenuItem Header="{Binding OutputWindowMenuString}" Command="{Binding ShowOutputWindowCommand}" />
                     <Separator/>
                     <MenuItem Header="Close" Command="{Binding CloseCommand}"/>
                 </ContextMenu>

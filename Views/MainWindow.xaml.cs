@@ -11,7 +11,7 @@ namespace LogitechAudioVisualizer.Views
         {
             InitializeComponent();
 
-            this.DataContext = new MainWindowViewModel();
+            this.DataContext = MainWindowViewModel.Instance;
         }
 
         protected override void OnClosing(CancelEventArgs e)

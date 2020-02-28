@@ -219,6 +219,9 @@
       <DependentUpon>OutputUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\OutputWindow.cs" />
+    <Compile Include="Views\OutputWindow.xaml.cs">
+      <DependentUpon>OutputWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ProfileRenameForm.cs" />
     <Compile Include="Views\Properties\Resources.cs" />
     <Compile Include="Views\Properties\Settings.cs" />
@@ -238,6 +241,10 @@
     <Page Include="Views\OutputUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\OutputWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

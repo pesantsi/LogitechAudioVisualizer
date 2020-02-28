@@ -13,11 +13,25 @@ using System.Windows.Media;
 using LogitechSpectrogram.Writers;
 using System.Windows.Input;
 using Prism.Commands;
+using LogitechAudioVisualizer.Views;
 
 namespace LogitechAudioVisualizer.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase
     {
+        private static MainWindowViewModel m_instance;
+
+        public static MainWindowViewModel Instance 
+        { 
+            get
+            {
+                if (m_instance == null)
+                    m_instance = new MainWindowViewModel();
+
+                return m_instance;
+            } 
+        }
+
         public string SdkVersionString
         {
             get => Get<string>();
@@ -34,16 +48,33 @@ namespace LogitechAudioVisualizer.ViewModels
 
         public ICommand CloseCommand { get; }
 
+        public ICommand ShowOutputWindowCommand { get; }
+
+        public string OutputWindowMenuString
+        {
+            get => Get<string>();
+            set => Set(value);
+        }
+
         private Task m_runner;
         private CancellationTokenSource m_cancellationTokenSource = new CancellationTokenSource();
 
-        public MainWindowViewModel()
+        private MainWindowViewModel()
         {
             OpenCommand = new DelegateCommand(() => App.Current.MainWindow.Show());
             CloseCommand = new DelegateCommand(() =>
             {
                 m_cancellationTokenSource.Cancel();
                 App.Current.Shutdown();
+            });
+
+            OutputWindowMenuString = "Show Output Window";
+            ShowOutputWindowCommand = new DelegateCommand(() =>
+            {
+                OutputWindow t = new OutputWindow();
+                t.Show();
+
+
             });
 
             OutputViewModel = new OutputViewModel();
@@ -70,9 +101,9 @@ namespace LogitechAudioVisualizer.ViewModels
 
         private void DoWork()
         {
-            MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
+            //MMDevice mmDevice = GetInputDevices()["Realtek HD Audio 2nd output (Realtek High Definition Audio)"];
 
-            //MMDevice mmDevice = GetInputDevices()["Remote Audio"];
+            MMDevice mmDevice = GetInputDevices()["Remote Audio"];
 
 
             string keyboardLayout = "US";
@@ -184,7 +215,7 @@ namespace LogitechAudioVisualizer.ViewModels
                     }
 
 
-                    writerList.ForEach((Action<IWriter>)(x => x.Write(fftData)));
+                    //writerList.ForEach((Action<IWriter>)(x => x.Write(fftData)));
 
                     OutputViewModel.UpdateImage(fftData, UserSettingsManager.Instance.UserSettings.OsVerticalScale.Value, backgroundColor, foregroundColor);
 
